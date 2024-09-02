@@ -37,7 +37,22 @@ const initialState: IProductState = {
 
   // Product details
   isCurrentProductLoading: true,
-  currentProduct: null,
+  currentProduct: {
+    id: 0,
+    name: '',
+    description: '',
+    colors: [''],
+    price: 0,
+    currencyUnit: '',
+    quantity: 0,
+    discount: 0,
+    image: '',
+    ratingStar: 0,
+    reviewNumber: 0,
+    isHotDeal: false,
+    categoryId: 0,
+    categoryName: ''
+  },
   currentProductError: null,
 
   //listType
