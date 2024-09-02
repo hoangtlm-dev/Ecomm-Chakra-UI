@@ -1,6 +1,7 @@
 export * from './themes'
 export * from './url'
 export * from './http-request'
+export * from './env'
 export * from './query-params'
 export * from './product'
 export * from './colors'
