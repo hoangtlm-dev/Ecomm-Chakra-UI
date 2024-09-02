@@ -4,12 +4,20 @@ import { Box, Button, Center, Flex, Heading, HStack, Image, Stack, StackDivider,
 import { Product } from '@app/types'
 
 // Components
-import { CartButtonIcon, FacebookIcon, TwitterIcon, ProductRating, QuantityController } from '@app/components'
+import {
+  CartButtonIcon,
+  FacebookIcon,
+  TwitterIcon,
+  ProductRating,
+  QuantityController,
+  SkeletonProductInfo
+} from '@app/components'
 
 // Utils
 import { calculateProductPrice } from '@app/utils'
 
 interface IProductInfoProps {
+  isLoading: boolean
   product: Product
   onAddToCart: (product: Product) => void
   currentQuantity: number
@@ -19,6 +27,7 @@ interface IProductInfoProps {
 }
 
 const ProductInfo = ({
+  isLoading,
   product,
   onAddToCart,
   currentQuantity,
@@ -28,6 +37,10 @@ const ProductInfo = ({
 }: IProductInfoProps) => {
   const { name, description, image, price, currencyUnit, quantity, discount, reviewNumber, ratingStar, categoryName } =
     product
+
+  if (isLoading) {
+    return <SkeletonProductInfo />
+  }
 
   return (
     <Stack spacing={16}>

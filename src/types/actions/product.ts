@@ -12,7 +12,7 @@ export interface IProductState {
 
   // Product details
   isCurrentProductLoading: boolean
-  currentProduct: Product | null
+  currentProduct: Product
   currentProductError: string | null
 
   // Add listType
