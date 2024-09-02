@@ -12,11 +12,11 @@ import { CartHeaderIcon, UserIcon } from '@app/components'
 import { useCartContext } from '@app/hooks'
 
 const ActionHeader = () => {
-  const { state: cartState, fetchCarts } = useCartContext()
+  const { state: cartState, fetchCart } = useCartContext()
 
   useEffect(() => {
-    fetchCarts()
-  }, [fetchCarts])
+    fetchCart()
+  }, [fetchCart])
 
   return (
     <Box pt={8} pb={4} borderBottomWidth={2} borderColor="borderBlurGray">

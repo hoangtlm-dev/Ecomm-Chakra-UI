@@ -25,6 +25,6 @@ type Story = StoryObj<typeof CartList>
 
 export const Default: Story = {
   args: {
-    carts: MOCK_CARTS()
+    cart: MOCK_CARTS()
   }
 }

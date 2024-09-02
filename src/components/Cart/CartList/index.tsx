@@ -32,7 +32,7 @@ import { calculateProductPrice } from '@app/utils'
 
 interface ICartListProps {
   isLoading: boolean
-  carts: CartItemType[]
+  cart: CartItemType[]
   onRemoveItemFromCart: (cartId: number) => void
   onIncreaseQuantity: (cartId: number) => void
   onDecreaseQuantity: (cartId: number) => void
@@ -41,7 +41,7 @@ interface ICartListProps {
 
 const CartList = ({
   isLoading,
-  carts,
+  cart,
   onRemoveItemFromCart,
   onIncreaseQuantity,
   onDecreaseQuantity,
@@ -59,20 +59,20 @@ const CartList = ({
       ))
     }
 
-    if (!isLoading && !carts.length) {
+    if (!isLoading && !cart.length) {
       return <ProductListEmpty />
     }
 
-    return carts.map((cart, index) => (
-      <Fragment key={cart.id}>
+    return cart.map((cartItem, index) => (
+      <Fragment key={cartItem.id}>
         <CartItem
-          cart={cart}
+          cart={cartItem}
           onRemoveItemFromCart={onRemoveItemFromCart}
-          onIncreaseQuantity={() => onIncreaseQuantity(cart.id)}
-          onChangeQuantity={(value) => onChangeQuantity(cart.id, Number(value))}
-          onDecreaseQuantity={() => onDecreaseQuantity(cart.id)}
+          onIncreaseQuantity={() => onIncreaseQuantity(cartItem.id)}
+          onChangeQuantity={(value) => onChangeQuantity(cartItem.id, Number(value))}
+          onDecreaseQuantity={() => onDecreaseQuantity(cartItem.id)}
         />
-        {index < carts.length - 1 && <Divider orientation="horizontal" />}
+        {index < cart.length - 1 && <Divider orientation="horizontal" />}
       </Fragment>
     ))
   }
@@ -122,7 +122,7 @@ const CartList = ({
                 ))}
               </>
             )}
-            {!isLoading && !carts.length && (
+            {!isLoading && !cart.length && (
               <Tr>
                 <Td colSpan={5}>
                   <ProductListEmpty />
@@ -130,8 +130,8 @@ const CartList = ({
               </Tr>
             )}
             {!isLoading &&
-              carts.length > 0 &&
-              carts.map((cart) => {
+              cart.length > 0 &&
+              cart.map((cart) => {
                 const {
                   id,
                   productName,

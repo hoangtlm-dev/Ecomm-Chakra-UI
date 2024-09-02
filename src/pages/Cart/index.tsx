@@ -37,7 +37,7 @@ const Cart = () => {
 
   const {
     state: cartState,
-    fetchCarts,
+    fetchCart,
     increaseQuantity,
     decreaseQuantity,
     changeQuantity,
@@ -50,8 +50,8 @@ const Cart = () => {
   const cancelConfirmDeleteRef = useRef<HTMLButtonElement | null>(null)
 
   useEffect(() => {
-    fetchCarts()
-  }, [fetchCarts])
+    fetchCart()
+  }, [fetchCart])
 
   const handleRemoveItemFromCart = (cartId: number) => {
     setSelectedCartId(cartId)
@@ -102,7 +102,7 @@ const Cart = () => {
     <Container>
       <CartList
         isLoading={isCartListLoading}
-        carts={cartList.data}
+        cart={cartList.data}
         onRemoveItemFromCart={handleRemoveItemFromCart}
         onIncreaseQuantity={increaseQuantity}
         onDecreaseQuantity={decreaseQuantity}
