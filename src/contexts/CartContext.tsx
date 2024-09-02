@@ -7,7 +7,7 @@ import { ACTION_TYPES, MESSAGES, PAGINATION } from '@app/constants'
 import { CartAction, CartItem, ICartState, PaginationResponse, QueryParams } from '@app/types'
 
 // Services
-import { addToCartService, getCartsService, removeFromCartServices } from '@app/services'
+import { addToCartService, getCartService, removeFromCartServices } from '@app/services'
 
 // Reducers
 import { cartReducer } from '@app/reducers'
@@ -41,7 +41,7 @@ export interface ICartContextType {
   state: ICartState
   dispatch: Dispatch<CartAction>
   addToCart: (cart: CartItem) => Promise<void>
-  fetchCarts: (params?: Partial<QueryParams<CartItem>>) => Promise<void>
+  fetchCart: (params?: Partial<QueryParams<CartItem>>) => Promise<void>
   increaseQuantity: (cartId: number) => void
   decreaseQuantity: (cartId: number) => void
   changeQuantity: (cartId: number, quantity: number) => void
@@ -53,7 +53,7 @@ export const CartContext = createContext<ICartContextType | null>(null)
 const CartProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState)
 
-  const fetchCarts = useCallback(async (params: Partial<QueryParams<CartItem>> = {}) => {
+  const fetchCart = useCallback(async (params: Partial<QueryParams<CartItem>> = {}) => {
     dispatch({ type: ACTION_TYPES.FETCH_CART_PENDING })
 
     const defaultParams: QueryParams<Partial<CartItem>> = {
@@ -65,7 +65,7 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
     }
 
     try {
-      const response: PaginationResponse<CartItem> = await getCartsService(defaultParams)
+      const response: PaginationResponse<CartItem> = await getCartService(defaultParams)
       dispatch({ type: ACTION_TYPES.FETCH_CART_SUCCESS, payload: response })
     } catch (error) {
       dispatch({ type: ACTION_TYPES.FETCH_CART_FAILED, payload: MESSAGES.FETCH_CART_FAILED })
@@ -115,14 +115,14 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
     () => ({
       state,
       dispatch,
-      fetchCarts,
+      fetchCart,
       addToCart,
       increaseQuantity,
       decreaseQuantity,
       changeQuantity,
       removeFromCart
     }),
-    [state, fetchCarts, addToCart, increaseQuantity, decreaseQuantity, changeQuantity, removeFromCart]
+    [state, fetchCart, addToCart, increaseQuantity, decreaseQuantity, changeQuantity, removeFromCart]
   )
 
   return <CartContext.Provider value={cartContextValue}>{children}</CartContext.Provider>

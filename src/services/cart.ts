@@ -8,7 +8,7 @@ import { CartItem, PaginationRequest, PaginationResponse, QueryParams } from '@a
 import { getEnvValue, httpRequest, updateQueryParams } from '@app/utils'
 
 // Api urls
-const cartApiUrl = `${getEnvValue('VITE_BASE_API_URL')}/${API_PATHS.CARTS}`
+const cartApiUrl = `${getEnvValue('VITE_BASE_API_URL')}/${API_PATHS.CART}`
 const paginationApiUrl = getEnvValue('VITE_PAGINATION_API_URL')
 
 /**
@@ -36,7 +36,7 @@ export const addToCartService = async (cartData: CartItem): Promise<CartItem> =>
  * @returns - A promise that resolves to a paginated response containing an array of cart items and pagination metadata.
  *
  */
-export const getCartsService = async (
+export const getCartService = async (
   queryParams: QueryParams<Partial<CartItem>>
 ): Promise<PaginationResponse<CartItem>> => {
   const queryString = updateQueryParams(queryParams)
