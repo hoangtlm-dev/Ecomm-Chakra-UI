@@ -1,6 +1,5 @@
 import { ChakraProvider, Container, Heading, VStack, Text, Link } from '@chakra-ui/react'
 import { BrowserRouter, Route, Routes, Link as ReactRouterLink } from 'react-router-dom'
-import { ErrorBoundary } from 'react-error-boundary'
 
 // Constants
 import { ROUTES } from '@app/constants'
@@ -8,14 +7,14 @@ import { ROUTES } from '@app/constants'
 // Themes
 import { theme } from '@app/themes'
 
-// Components
-import { Fallback } from '@app/components'
+// Context
+import { AppProviders } from '@app/contexts'
 
-// Layouts
+/// Layout
 import { MainLayout } from '@app/layouts'
 
 // Pages
-import { Cart, Home, ProductDetails, NotFound } from '@app/pages'
+import { Cart, Home, ProductDetails } from '@app/pages'
 
 const PlaceholderPage = ({ pageName = 'Placeholder' }: { pageName?: string }) => (
   <Container>
@@ -35,14 +34,14 @@ const App = () => {
       theme={theme}
       toastOptions={{ defaultOptions: { position: 'bottom-right', isClosable: true, duration: 3000 } }}
     >
-      <ErrorBoundary fallback={<Fallback />}>
+      <AppProviders>
         <BrowserRouter>
           <Routes>
             <Route element={<MainLayout />}>
               <Route path={ROUTES.ROOT} element={<Home />} />
               <Route path={ROUTES.PRODUCT_DETAILS} element={<ProductDetails />} />
               <Route path={ROUTES.CART} element={<Cart />} />
-              <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
+              <Route path={ROUTES.NOT_FOUND} element={<PlaceholderPage pageName="Not found" />} />
 
               {/* Menus */}
               <Route path={ROUTES.BAGS} element={<PlaceholderPage pageName="Bags" />} />
@@ -52,7 +51,7 @@ const App = () => {
             </Route>
           </Routes>
         </BrowserRouter>
-      </ErrorBoundary>
+      </AppProviders>
     </ChakraProvider>
   )
 }

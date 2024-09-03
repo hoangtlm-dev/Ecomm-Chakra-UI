@@ -60,22 +60,9 @@ const Cart = () => {
 
   const handleConfirmRemoveItemFromCart = async () => {
     if (selectedCartId) {
-      try {
-        await removeFromCart(selectedCartId)
-        toast({
-          title: 'Success',
-          description: MESSAGES.REMOVE_PRODUCT_SUCCESS,
-          status: 'success'
-        })
-      } catch (error) {
-        toast({
-          title: 'Failed',
-          description: String(error),
-          status: 'error'
-        })
-      }
-      onConfirmDeleteClose()
+      await removeFromCart(selectedCartId)
     }
+    onConfirmDeleteClose()
   }
 
   const subTotal = cartList.data.reduce((acc, cartItem) => {

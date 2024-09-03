@@ -5,17 +5,12 @@ import App from './App.tsx'
 // Constants
 import { MESSAGES } from '@app/constants'
 
-// Contexts
-import { AppProviders } from '@app/contexts'
-
 const domNode = document.getElementById('root')
 
 if (domNode) {
   createRoot(domNode).render(
     <StrictMode>
-      <AppProviders>
-        <App />
-      </AppProviders>
+      <App />
     </StrictMode>
   )
 } else {

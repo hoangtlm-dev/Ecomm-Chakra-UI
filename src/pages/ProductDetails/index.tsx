@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Navigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import {
   Center,
   Container,
@@ -9,12 +9,8 @@ import {
   ModalOverlay,
   Spinner,
   useDisclosure,
-  useToast,
   VStack
 } from '@chakra-ui/react'
-
-// Constants
-import { MESSAGES, ROUTES } from '@app/constants'
 
 // Components
 import { ProductInfo, ProductList } from '@app/components'
@@ -32,7 +28,6 @@ const ProductDetails = () => {
   const [currentProductQuantity, setCurrentProductQuantity] = useState(1)
   const { productSlug } = useParams()
 
-  const toast = useToast()
   const { isOpen: isOpenLoadingModal, onOpen: onOpenLoadingModal, onClose: onCloseLoadingModal } = useDisclosure()
 
   const { state: productState, fetchProducts, fetchCurrentProduct } = useProductContext()
@@ -66,41 +61,23 @@ const ProductDetails = () => {
     }
   }, [isAddToCartLoading, onOpenLoadingModal])
 
-  if (!productId) {
-    return <Navigate to={ROUTES.NOT_FOUND} />
-  }
-
   const handleAddProductToCart = async (product: Product) => {
     const { id, name, price, currencyUnit, quantity, discount, image } = product
 
     const cartItemFound = cartList.data.find((cartItem) => cartItem.productId === id)
     const cartQuantity = currentProduct?.id === product.id ? currentProductQuantity : 1
 
-    try {
-      await addToCart({
-        id: cartItemFound ? cartItemFound.id : 0,
-        productId: id,
-        productName: name,
-        productPrice: price,
-        productQuantity: quantity,
-        productCurrencyUnit: currencyUnit,
-        productDiscount: discount,
-        productImage: image,
-        quantity: cartItemFound ? cartItemFound.quantity + cartQuantity : cartQuantity
-      })
-
-      toast({
-        title: 'Success',
-        description: MESSAGES.ADD_PRODUCT_SUCCESS,
-        status: 'success'
-      })
-    } catch (error) {
-      toast({
-        title: 'Failed',
-        description: String(error),
-        status: 'error'
-      })
-    }
+    await addToCart({
+      id: cartItemFound ? cartItemFound.id : 0,
+      productId: id,
+      productName: name,
+      productPrice: price,
+      productQuantity: quantity,
+      productCurrencyUnit: currencyUnit,
+      productDiscount: discount,
+      productImage: image,
+      quantity: cartItemFound ? cartItemFound.quantity + cartQuantity : cartQuantity
+    })
 
     onCloseLoadingModal()
   }
@@ -132,7 +109,6 @@ const ProductDetails = () => {
         onDecreaseQuantity={handleDecreaseQuantity}
         onChangeQuantity={handleChangeQuantity}
       />
-
       <VStack mt={12} spacing={12}>
         <Heading fontSize={{ base: 'textLarge', md: 'headingSmall' }} textTransform="uppercase">
           Related Products

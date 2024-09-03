@@ -1,4 +1,5 @@
 import { createContext, Dispatch, ReactNode, useCallback, useMemo, useReducer } from 'react'
+import { useToast } from '@chakra-ui/react'
 
 // Constants
 import { ACTION_TYPES, MESSAGES, PAGINATION } from '@app/constants'
@@ -51,6 +52,7 @@ export interface ICartContextType {
 export const CartContext = createContext<ICartContextType | null>(null)
 
 const CartProvider = ({ children }: { children: ReactNode }) => {
+  const toast = useToast()
   const [state, dispatch] = useReducer(cartReducer, initialState)
 
   const fetchCart = useCallback(async (params: Partial<ExtendedQueryParams<CartItem>> = {}) => {
@@ -60,27 +62,39 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
       _sort: params._sort ?? 'id',
       _order: params._order ?? 'desc',
       limit: params.limit ?? PAGINATION.DEFAULT_ITEMS_PER_PAGE,
-      id: params.id ?? 0
+      id: params.id ?? 0,
+      ...params
     }
 
     try {
-      const response: PaginationResponse<CartItem> = await getCartService({ ...defaultParams, ...params })
+      const response: PaginationResponse<CartItem> = await getCartService(defaultParams)
       dispatch({ type: ACTION_TYPES.FETCH_CART_SUCCESS, payload: response })
     } catch (error) {
       dispatch({ type: ACTION_TYPES.FETCH_CART_FAILED, payload: MESSAGES.FETCH_CART_FAILED })
     }
   }, [])
 
-  const addToCart = useCallback(async (cart: CartItem) => {
-    dispatch({ type: ACTION_TYPES.ADD_TO_CART_PENDING })
-    try {
-      const newCart = await addToCartService(cart)
-      dispatch({ type: ACTION_TYPES.ADD_TO_CART_SUCCESS, payload: newCart })
-    } catch (error) {
-      dispatch({ type: ACTION_TYPES.ADD_TO_CART_FAILED, payload: MESSAGES.ADD_TO_CART_FAILED })
-      throw new Error(MESSAGES.ADD_TO_CART_FAILED)
-    }
-  }, [])
+  const addToCart = useCallback(
+    async (cart: CartItem) => {
+      dispatch({ type: ACTION_TYPES.ADD_TO_CART_PENDING })
+      try {
+        const newCart = await addToCartService(cart)
+        dispatch({ type: ACTION_TYPES.ADD_TO_CART_SUCCESS, payload: newCart })
+        toast({
+          title: 'Success',
+          description: MESSAGES.ADD_TO_CART_SUCCESS,
+          status: 'success'
+        })
+      } catch (error) {
+        toast({
+          title: 'Failed',
+          description: MESSAGES.ADD_TO_CART_FAILED,
+          status: 'error'
+        })
+      }
+    },
+    [toast]
+  )
 
   const increaseQuantity = useCallback((cartId: number) => {
     dispatch({ type: ACTION_TYPES.INCREASE_QUANTITY_IN_CART, payload: cartId })
@@ -94,21 +108,31 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
     dispatch({ type: ACTION_TYPES.CHANGE_QUANTITY_IN_CART, payload: { cartId, quantity } })
   }, [])
 
-  const removeFromCart = useCallback(async (cartId: number) => {
-    dispatch({ type: ACTION_TYPES.REMOVE_FROM_CART_PENDING })
+  const removeFromCart = useCallback(
+    async (cartId: number) => {
+      dispatch({ type: ACTION_TYPES.REMOVE_FROM_CART_PENDING })
 
-    try {
-      await removeFromCartServices(cartId)
-
-      dispatch({
-        type: ACTION_TYPES.REMOVE_FROM_CART_SUCCESS,
-        payload: cartId
-      })
-    } catch (error) {
-      dispatch({ type: ACTION_TYPES.REMOVE_FROM_CART_FAILED, payload: MESSAGES.REMOVE_FROM_CART_FAILED })
-      throw new Error(MESSAGES.REMOVE_FROM_CART_FAILED)
-    }
-  }, [])
+      try {
+        await removeFromCartServices(cartId)
+        dispatch({
+          type: ACTION_TYPES.REMOVE_FROM_CART_SUCCESS,
+          payload: cartId
+        })
+        toast({
+          title: 'Success',
+          description: MESSAGES.REMOVE_FROM_CART_SUCCESS,
+          status: 'success'
+        })
+      } catch (error) {
+        toast({
+          title: 'Failed',
+          description: MESSAGES.REMOVE_FROM_CART_FAILED,
+          status: 'error'
+        })
+      }
+    },
+    [toast]
+  )
 
   const cartContextValue: ICartContextType = useMemo(
     () => ({

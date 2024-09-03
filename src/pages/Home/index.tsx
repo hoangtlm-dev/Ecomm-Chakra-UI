@@ -9,12 +9,11 @@ import {
   ModalOverlay,
   Spinner,
   Stack,
-  useDisclosure,
-  useToast
+  useDisclosure
 } from '@chakra-ui/react'
 
 // Constants
-import { banner, MESSAGES, PAGINATION, ROUTES } from '@app/constants'
+import { banner, PAGINATION, ROUTES } from '@app/constants'
 
 // Types
 import { Product } from '@app/types'
@@ -54,7 +53,6 @@ const Home = () => {
   const { cartList, isAddToCartLoading } = cartState
 
   const navigate = useNavigate()
-  const toast = useToast()
   const { isOpen: isOpenLoadingModal, onOpen: onOpenLoadingModal, onClose: onCloseLoadingModal } = useDisclosure()
 
   const queryParams = useQueryParams()
@@ -139,31 +137,17 @@ const Home = () => {
 
     const cartItemFound = cartList.data.find((cartItem) => cartItem.productId === id)
 
-    try {
-      await addToCart({
-        id: cartItemFound ? cartItemFound.id : 0,
-        productId: id,
-        productName: name,
-        productPrice: price,
-        productCurrencyUnit: currencyUnit,
-        productQuantity: quantity,
-        productDiscount: discount,
-        productImage: image,
-        quantity: cartItemFound ? cartItemFound.quantity + 1 : 1
-      })
-
-      toast({
-        title: 'Success',
-        description: MESSAGES.ADD_PRODUCT_SUCCESS,
-        status: 'success'
-      })
-    } catch (error) {
-      toast({
-        title: 'Failed',
-        description: String(error),
-        status: 'error'
-      })
-    }
+    await addToCart({
+      id: cartItemFound ? cartItemFound.id : 0,
+      productId: id,
+      productName: name,
+      productPrice: price,
+      productCurrencyUnit: currencyUnit,
+      productQuantity: quantity,
+      productDiscount: discount,
+      productImage: image,
+      quantity: cartItemFound ? cartItemFound.quantity + 1 : 1
+    })
 
     onCloseLoadingModal()
   }
@@ -196,7 +180,6 @@ const Home = () => {
             onSortByField={handleSortByField}
             onShowListByItemsPerPage={handleShowListByItemsPerPage}
           />
-
           <ProductList
             isLoading={isProductListLoading}
             products={productList.data}
