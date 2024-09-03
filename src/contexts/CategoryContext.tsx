@@ -32,7 +32,7 @@ const initialState: ICategoryState = {
 export interface ICategoryContextType {
   state: ICategoryState
   dispatch: Dispatch<CategoryAction>
-  fetchCategories: (params?: ExtendedQueryParams<Partial<Category>>) => Promise<void>
+  fetchCategories: (params?: Partial<ExtendedQueryParams<Category>>) => Promise<void>
 }
 
 export const CategoryContext = createContext<ICategoryContextType | null>(null)
@@ -40,19 +40,18 @@ export const CategoryContext = createContext<ICategoryContextType | null>(null)
 const CategoryProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(categoryReducer, initialState)
 
-  const fetchCategories = useCallback(async (params: ExtendedQueryParams<Partial<Category>> = {}) => {
+  const fetchCategories = useCallback(async (params: Partial<ExtendedQueryParams<Category>> = {}) => {
     dispatch({ type: ACTION_TYPES.FETCH_CATEGORIES_PENDING })
 
-    const defaultParams: ExtendedQueryParams<Partial<Category>> = {
+    const defaultParams: Partial<ExtendedQueryParams<Category>> = {
       _sort: params._sort ?? 'id',
       _order: params._order ?? 'asc',
       limit: params.limit ?? PAGINATION.DEFAULT_ITEMS_PER_PAGE,
-      id: params.id ?? 0,
-      ...params
+      id: params.id ?? 0
     }
 
     try {
-      const response: PaginationResponse<Category> = await getCategoriesService(defaultParams)
+      const response: PaginationResponse<Category> = await getCategoriesService({ ...defaultParams, ...params })
       dispatch({ type: ACTION_TYPES.FETCH_CATEGORIES_SUCCESS, payload: response })
     } catch (error) {
       dispatch({ type: ACTION_TYPES.FETCH_CATEGORIES_FAILURE, payload: MESSAGES.FETCH_CATEGORIES_FAILED })

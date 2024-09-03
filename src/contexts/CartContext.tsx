@@ -41,7 +41,7 @@ export interface ICartContextType {
   state: ICartState
   dispatch: Dispatch<CartAction>
   addToCart: (cart: CartItem) => Promise<void>
-  fetchCart: (params?: ExtendedQueryParams<Partial<CartItem>>) => Promise<void>
+  fetchCart: (params?: Partial<ExtendedQueryParams<CartItem>>) => Promise<void>
   increaseQuantity: (cartId: number) => void
   decreaseQuantity: (cartId: number) => void
   changeQuantity: (cartId: number, quantity: number) => void
@@ -53,19 +53,18 @@ export const CartContext = createContext<ICartContextType | null>(null)
 const CartProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState)
 
-  const fetchCart = useCallback(async (params: ExtendedQueryParams<Partial<CartItem>> = {}) => {
+  const fetchCart = useCallback(async (params: Partial<ExtendedQueryParams<CartItem>> = {}) => {
     dispatch({ type: ACTION_TYPES.FETCH_CART_PENDING })
 
-    const defaultParams: ExtendedQueryParams<Partial<CartItem>> = {
+    const defaultParams: Partial<ExtendedQueryParams<CartItem>> = {
       _sort: params._sort ?? 'id',
       _order: params._order ?? 'desc',
       limit: params.limit ?? PAGINATION.DEFAULT_ITEMS_PER_PAGE,
-      id: params.id ?? 0,
-      ...params
+      id: params.id ?? 0
     }
 
     try {
-      const response: PaginationResponse<CartItem> = await getCartService(defaultParams)
+      const response: PaginationResponse<CartItem> = await getCartService({ ...defaultParams, ...params })
       dispatch({ type: ACTION_TYPES.FETCH_CART_SUCCESS, payload: response })
     } catch (error) {
       dispatch({ type: ACTION_TYPES.FETCH_CART_FAILED, payload: MESSAGES.FETCH_CART_FAILED })

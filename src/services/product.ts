@@ -12,7 +12,7 @@ const productApiUrl = `${getEnvValue('VITE_BASE_API_URL')}/${API_PATHS.PRODUCTS}
 const paginationApiUrl = getEnvValue('VITE_PAGINATION_API_URL')
 
 export const getProductsService = async (
-  queryParams: ExtendedQueryParams<Partial<ProductParams>>
+  queryParams: Partial<ExtendedQueryParams<ProductParams>>
 ): Promise<PaginationResponse<Product>> => {
   const queryString = updateQueryParams(queryParams)
 
