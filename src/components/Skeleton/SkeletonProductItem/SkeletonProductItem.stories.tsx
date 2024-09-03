@@ -1,11 +1,19 @@
+import { Center } from '@chakra-ui/react'
 import { Meta, StoryObj } from '@storybook/react'
 
 // Components
 import { SkeletonProductItem } from '@app/components'
 
 const meta: Meta<typeof SkeletonProductItem> = {
-  title: 'Components/Product/SkeletonProductItem',
+  title: 'Components/Skeleton/SkeletonProductItem',
   component: SkeletonProductItem,
+  decorators: [
+    (Story) => (
+      <Center>
+        <Story />
+      </Center>
+    )
+  ],
   argTypes: {
     listType: {
       control: 'radio'

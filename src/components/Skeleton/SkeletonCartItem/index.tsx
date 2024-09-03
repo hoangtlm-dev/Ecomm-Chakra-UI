@@ -2,7 +2,7 @@ import { Flex, Skeleton, Stack } from '@chakra-ui/react'
 
 const SkeletonCartItem = () => {
   return (
-    <Flex gap={4} display={{ base: 'flex', lg: 'none' }}>
+    <Flex gap={4}>
       <Skeleton boxSize="80px" />
       <Stack flex={1} justifyContent="center">
         <Flex justifyContent="space-between">
