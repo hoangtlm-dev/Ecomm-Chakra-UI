@@ -1,4 +1,4 @@
-import React from 'react'
+import { Fragment } from 'react'
 import { Center, Divider, Grid } from '@chakra-ui/react'
 
 // Constants
@@ -36,40 +36,36 @@ const ProductList = ({
         }
       : 'repeat(1, 1fr)'
 
-  const renderProducts = () => {
-    if (isLoading) {
-      return Array.from({ length: skeletonTemplateColumns }).map((_, index) => (
-        <React.Fragment key={index}>
-          <SkeletonProductItem listType={listType} />
-          {listType === 'list' && index < skeletonTemplateColumns - 1 && <Divider orientation="horizontal" />}
-        </React.Fragment>
-      ))
-    }
+  if (isLoading) {
+    return (
+      <Grid w="full" templateColumns={gridTemplateColumns || defaultGridTemplateColumns} gap={4}>
+        {Array.from({ length: skeletonTemplateColumns }).map((_, index) => (
+          <Fragment key={index}>
+            <SkeletonProductItem listType={listType} />
+            {listType === 'list' && index < skeletonTemplateColumns - 1 && <Divider orientation="horizontal" />}
+          </Fragment>
+        ))}
+      </Grid>
+    )
+  }
 
-    if (!products.length) {
-      return null
-    }
-
-    return products.map((product, index) => (
-      <React.Fragment key={product.id}>
-        <ProductItem product={product} listType={listType} onAddToCart={onAddToCart} />
-        {listType === 'list' && index < products.length - 1 && <Divider orientation="horizontal" />}
-      </React.Fragment>
-    ))
+  if (!isLoading && !products.length) {
+    return (
+      <Center>
+        <ProductListEmpty />
+      </Center>
+    )
   }
 
   return (
-    <>
-      {!isLoading && !products.length ? (
-        <Center>
-          <ProductListEmpty />
-        </Center>
-      ) : (
-        <Grid w="full" templateColumns={gridTemplateColumns || defaultGridTemplateColumns} gap={4}>
-          {renderProducts()}
-        </Grid>
-      )}
-    </>
+    <Grid w="full" templateColumns={gridTemplateColumns || defaultGridTemplateColumns} gap={4}>
+      {products.map((product, index) => (
+        <Fragment key={product.id}>
+          <ProductItem product={product} listType={listType} onAddToCart={onAddToCart} />
+          {listType === 'list' && index < products.length - 1 && <Divider orientation="horizontal" />}
+        </Fragment>
+      ))}
+    </Grid>
   )
 }
 
