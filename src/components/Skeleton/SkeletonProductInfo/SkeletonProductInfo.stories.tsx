@@ -5,7 +5,7 @@ import { Container } from '@chakra-ui/react'
 import { SkeletonProductInfo } from '@app/components'
 
 const meta: Meta<typeof SkeletonProductInfo> = {
-  title: 'Components/Product/SkeletonProductInfo',
+  title: 'Components/Skeleton/SkeletonProductInfo',
   component: SkeletonProductInfo,
   decorators: [
     (Story) => (

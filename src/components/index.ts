@@ -1,5 +1,6 @@
 export * from './icons'
 export * from './Header'
+export * from './Skeleton'
 export * from './Product'
 export * from './FilterBar'
 export * from './QuantityController'
