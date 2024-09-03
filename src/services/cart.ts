@@ -2,7 +2,7 @@
 import { API_PATHS, PAGINATION } from '@app/constants'
 
 // Types
-import { CartItem, PaginationRequest, PaginationResponse, QueryParams } from '@app/types'
+import { CartItem, ExtendedQueryParams, PaginationRequest, PaginationResponse } from '@app/types'
 
 // Utils
 import { getEnvValue, httpRequest, updateQueryParams } from '@app/utils'
@@ -37,7 +37,7 @@ export const addToCartService = async (cartData: CartItem): Promise<CartItem> =>
  *
  */
 export const getCartService = async (
-  queryParams: QueryParams<Partial<CartItem>>
+  queryParams: ExtendedQueryParams<Partial<CartItem>>
 ): Promise<PaginationResponse<CartItem>> => {
   const queryString = updateQueryParams(queryParams)
 

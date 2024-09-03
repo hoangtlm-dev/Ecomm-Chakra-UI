@@ -2,7 +2,7 @@
 import { API_PATHS, PAGINATION } from '@app/constants'
 
 // Types
-import { Category, PaginationRequest, PaginationResponse, QueryParams } from '@app/types'
+import { Category, ExtendedQueryParams, PaginationRequest, PaginationResponse } from '@app/types'
 
 // Utils
 import { getEnvValue, httpRequest, updateQueryParams } from '@app/utils'
@@ -12,7 +12,7 @@ const categoryApiUrl = `${getEnvValue('VITE_BASE_API_URL')}/${API_PATHS.CATEGORI
 const paginationApiUrl = getEnvValue('VITE_PAGINATION_API_URL')
 
 export const getCategoriesService = async (
-  queryParams: QueryParams<Partial<Category>>
+  queryParams: ExtendedQueryParams<Partial<Category>>
 ): Promise<PaginationResponse<Category>> => {
   const queryString = updateQueryParams(queryParams)
 
