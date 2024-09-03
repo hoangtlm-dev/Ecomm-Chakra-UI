@@ -9,7 +9,7 @@ const meta: Meta<typeof SkeletonCartItem> = {
   component: SkeletonCartItem,
   decorators: [
     (Story) => (
-      <Container>
+      <Container maxW="720px">
         <Story />
       </Container>
     )
