@@ -80,12 +80,11 @@ const ProductProvider = ({ children }: { children: ReactNode }) => {
       _order: params._order ?? 'desc',
       limit: params.limit ?? PAGINATION.DEFAULT_ITEMS_PER_PAGE,
       price_gte: params.price_gte ?? 0,
-      price_lte: params.price_gte ?? 1000,
-      ...params
+      price_lte: params.price_gte ?? 1000
     }
 
     try {
-      const response: PaginationResponse<Product> = await getProductsService(defaultParams)
+      const response: PaginationResponse<Product> = await getProductsService({ ...defaultParams, ...params })
       dispatch({ type: ACTION_TYPES.FETCH_PRODUCTS_SUCCESS, payload: response })
     } catch (error) {
       dispatch({ type: ACTION_TYPES.FETCH_PRODUCTS_ERROR, payload: MESSAGES.FETCH_PRODUCTS_FAILED })

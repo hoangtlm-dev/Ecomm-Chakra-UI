@@ -37,7 +37,7 @@ export const addToCartService = async (cartData: CartItem): Promise<CartItem> =>
  *
  */
 export const getCartService = async (
-  queryParams: ExtendedQueryParams<Partial<CartItem>>
+  queryParams: Partial<ExtendedQueryParams<CartItem>>
 ): Promise<PaginationResponse<CartItem>> => {
   const queryString = updateQueryParams(queryParams)
 

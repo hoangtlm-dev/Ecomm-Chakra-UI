@@ -12,7 +12,7 @@ const categoryApiUrl = `${getEnvValue('VITE_BASE_API_URL')}/${API_PATHS.CATEGORI
 const paginationApiUrl = getEnvValue('VITE_PAGINATION_API_URL')
 
 export const getCategoriesService = async (
-  queryParams: ExtendedQueryParams<Partial<Category>>
+  queryParams: Partial<ExtendedQueryParams<Category>>
 ): Promise<PaginationResponse<Category>> => {
   const queryString = updateQueryParams(queryParams)
 
