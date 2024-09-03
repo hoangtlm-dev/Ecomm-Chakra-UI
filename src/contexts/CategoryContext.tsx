@@ -4,7 +4,7 @@ import { createContext, Dispatch, ReactNode, useCallback, useMemo, useReducer } 
 import { ACTION_TYPES, MESSAGES, PAGINATION } from '@app/constants'
 
 // Types
-import { Category, CategoryAction, ICategoryState, PaginationResponse, QueryParams } from '@app/types'
+import { Category, CategoryAction, ExtendedQueryParams, ICategoryState, PaginationResponse } from '@app/types'
 
 // Services
 import { getCategoriesService } from '@app/services'
@@ -32,7 +32,7 @@ const initialState: ICategoryState = {
 export interface ICategoryContextType {
   state: ICategoryState
   dispatch: Dispatch<CategoryAction>
-  fetchCategories: (params?: Partial<QueryParams<Category>>) => Promise<void>
+  fetchCategories: (params?: ExtendedQueryParams<Partial<Category>>) => Promise<void>
 }
 
 export const CategoryContext = createContext<ICategoryContextType | null>(null)
@@ -40,10 +40,10 @@ export const CategoryContext = createContext<ICategoryContextType | null>(null)
 const CategoryProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(categoryReducer, initialState)
 
-  const fetchCategories = useCallback(async (params: Partial<QueryParams<Category>> = {}) => {
+  const fetchCategories = useCallback(async (params: ExtendedQueryParams<Partial<Category>> = {}) => {
     dispatch({ type: ACTION_TYPES.FETCH_CATEGORIES_PENDING })
 
-    const defaultParams: QueryParams<Partial<Category>> = {
+    const defaultParams: ExtendedQueryParams<Partial<Category>> = {
       _sort: params._sort ?? 'id',
       _order: params._order ?? 'asc',
       limit: params.limit ?? PAGINATION.DEFAULT_ITEMS_PER_PAGE,
