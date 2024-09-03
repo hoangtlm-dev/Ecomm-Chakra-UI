@@ -1,4 +1,4 @@
-import React from 'react'
+import { Fragment } from 'react'
 import { Center, Divider, Grid } from '@chakra-ui/react'
 
 // Constants
@@ -40,10 +40,10 @@ const ProductList = ({
     return (
       <Grid w="full" templateColumns={gridTemplateColumns || defaultGridTemplateColumns} gap={4}>
         {Array.from({ length: skeletonTemplateColumns }).map((_, index) => (
-          <React.Fragment key={index}>
+          <Fragment key={index}>
             <SkeletonProductItem listType={listType} />
             {listType === 'list' && index < skeletonTemplateColumns - 1 && <Divider orientation="horizontal" />}
-          </React.Fragment>
+          </Fragment>
         ))}
       </Grid>
     )
@@ -60,10 +60,10 @@ const ProductList = ({
   return (
     <Grid w="full" templateColumns={gridTemplateColumns || defaultGridTemplateColumns} gap={4}>
       {products.map((product, index) => (
-        <React.Fragment key={product.id}>
+        <Fragment key={product.id}>
           <ProductItem product={product} listType={listType} onAddToCart={onAddToCart} />
           {listType === 'list' && index < products.length - 1 && <Divider orientation="horizontal" />}
-        </React.Fragment>
+        </Fragment>
       ))}
     </Grid>
   )
