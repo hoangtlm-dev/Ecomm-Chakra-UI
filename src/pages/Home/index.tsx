@@ -47,7 +47,7 @@ const Home = () => {
   const [priceRange, setPriceRange] = useState([0, 1000])
   const { state: productState, fetchProducts, setListType } = useProductContext()
   const { state: categoryState, fetchCategories } = useCategoryContext()
-  const { state: cartState, fetchCart, addToCart } = useCartContext()
+  const { state: cartState, addToCart } = useCartContext()
   const { productList, isProductListLoading, listType } = productState
   const { categoryList } = categoryState
   const { cartList, isAddToCartLoading } = cartState
@@ -85,10 +85,6 @@ const Home = () => {
   useEffect(() => {
     fetchCategories()
   }, [fetchCategories])
-
-  useEffect(() => {
-    fetchCart()
-  }, [fetchCart])
 
   const handleListTypeChange = (type: 'grid' | 'list') => {
     setListType(type)
