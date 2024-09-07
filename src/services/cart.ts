@@ -59,5 +59,5 @@ export const getCartService = async (
  * The promise resolves to `void` since no data is expected to be returned by the server after the deletion.
  *
  */
-export const removeFromCartServices = async (cartId: number): Promise<void> =>
+export const removeFromCartService = async (cartId: number): Promise<void> =>
   await httpRequest(`${cartApiUrl}/${cartId}`, 'DELETE')

@@ -7,7 +7,7 @@ import { ACTION_TYPES, MESSAGES, PAGINATION } from '@app/constants'
 import { CartAction, CartItem, ExtendedQueryParams, ICartState, PaginationResponse } from '@app/types'
 
 // Services
-import { addToCartService, getCartService, removeFromCartServices } from '@app/services'
+import { addToCartService, getCartService, removeFromCartService } from '@app/services'
 
 // Reducers
 import { cartReducer } from '@app/reducers'
@@ -98,7 +98,7 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
     dispatch({ type: ACTION_TYPES.REMOVE_FROM_CART_PENDING })
 
     try {
-      await removeFromCartServices(cartId)
+      await removeFromCartService(cartId)
       dispatch({
         type: ACTION_TYPES.REMOVE_FROM_CART_SUCCESS,
         payload: cartId
