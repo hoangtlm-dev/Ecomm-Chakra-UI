@@ -14,7 +14,7 @@ import {
 } from '@app/types'
 
 // Services
-import { getCurrentProductServices, getProductsService } from '@app/services'
+import { getCurrentProductService, getProductsService } from '@app/services'
 
 // Reducers
 import { productReducer } from '@app/reducers'
@@ -94,7 +94,7 @@ const ProductProvider = ({ children }: { children: ReactNode }) => {
   const fetchCurrentProduct = useCallback(async (productId: number) => {
     dispatch({ type: ACTION_TYPES.FETCH_PRODUCT_DETAILS_PENDING })
     try {
-      const response = await getCurrentProductServices(productId)
+      const response = await getCurrentProductService(productId)
       dispatch({ type: ACTION_TYPES.FETCH_PRODUCT_DETAILS_SUCCESS, payload: response })
     } catch (error) {
       dispatch({ type: ACTION_TYPES.FETCH_PRODUCT_DETAILS_ERROR, payload: MESSAGES.FETCH_PRODUCT_DETAILS_FAILED })

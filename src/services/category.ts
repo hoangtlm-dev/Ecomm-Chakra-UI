@@ -11,6 +11,14 @@ import { getEnvValue, httpRequest, updateQueryParams } from '@app/utils'
 const categoryApiUrl = `${getEnvValue('VITE_BASE_API_URL')}/${API_PATHS.CATEGORIES}`
 const paginationApiUrl = getEnvValue('VITE_PAGINATION_API_URL')
 
+/**
+ * Retrieves a paginated list of categories based on the provided query parameters.
+ *
+ * @param queryParams - An object containing query parameters to filter the categories.
+ *
+ * @returns - A promise that resolves to a paginated response containing an array of categories and pagination metadata.
+ *
+ */
 export const getCategoriesService = async (
   queryParams: Partial<ExtendedQueryParams<Category>>
 ): Promise<PaginationResponse<Category>> => {
