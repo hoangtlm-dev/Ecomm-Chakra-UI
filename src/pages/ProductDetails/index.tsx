@@ -9,6 +9,7 @@ import {
   ModalOverlay,
   Spinner,
   useDisclosure,
+  useToast,
   VStack
 } from '@chakra-ui/react'
 
@@ -23,12 +24,14 @@ import { useCartContext, useProductContext } from '@app/hooks'
 
 // Utils
 import { getIdFromSlug } from '@app/utils'
+import { MESSAGES } from '@app/constants'
 
 const ProductDetails = () => {
   const [currentProductQuantity, setCurrentProductQuantity] = useState(1)
   const { productSlug } = useParams()
 
   const { isOpen: isOpenLoadingModal, onOpen: onOpenLoadingModal, onClose: onCloseLoadingModal } = useDisclosure()
+  const toast = useToast()
 
   const { state: productState, fetchProducts, fetchCurrentProduct } = useProductContext()
   const { state: cartState, addToCart } = useCartContext()
@@ -67,17 +70,31 @@ const ProductDetails = () => {
     const cartItemFound = cartList.data.find((cartItem) => cartItem.productId === id)
     const cartQuantity = currentProduct?.id === product.id ? currentProductQuantity : 1
 
-    await addToCart({
-      id: cartItemFound ? cartItemFound.id : 0,
-      productId: id,
-      productName: name,
-      productPrice: price,
-      productQuantity: quantity,
-      productCurrencyUnit: currencyUnit,
-      productDiscount: discount,
-      productImage: image,
-      quantity: cartItemFound ? cartItemFound.quantity + cartQuantity : cartQuantity
-    })
+    try {
+      await addToCart({
+        id: cartItemFound ? cartItemFound.id : 0,
+        productId: id,
+        productName: name,
+        productPrice: price,
+        productQuantity: quantity,
+        productCurrencyUnit: currencyUnit,
+        productDiscount: discount,
+        productImage: image,
+        quantity: cartItemFound ? cartItemFound.quantity + cartQuantity : cartQuantity
+      })
+
+      toast({
+        title: 'Success',
+        description: MESSAGES.ADD_TO_CART_SUCCESS,
+        status: 'success'
+      })
+    } catch (error) {
+      toast({
+        title: 'Failed',
+        description: MESSAGES.ADD_TO_CART_FAILED,
+        status: 'error'
+      })
+    }
 
     onCloseLoadingModal()
   }

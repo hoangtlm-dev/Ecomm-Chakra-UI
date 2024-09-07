@@ -9,11 +9,12 @@ import {
   ModalOverlay,
   Spinner,
   Stack,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from '@chakra-ui/react'
 
 // Constants
-import { banner, PAGINATION, ROUTES } from '@app/constants'
+import { banner, MESSAGES, PAGINATION, ROUTES } from '@app/constants'
 
 // Types
 import { Product } from '@app/types'
@@ -54,6 +55,7 @@ const Home = () => {
 
   const navigate = useNavigate()
   const { isOpen: isOpenLoadingModal, onOpen: onOpenLoadingModal, onClose: onCloseLoadingModal } = useDisclosure()
+  const toast = useToast()
 
   const queryParams = useQueryParams()
 
@@ -133,17 +135,31 @@ const Home = () => {
 
     const cartItemFound = cartList.data.find((cartItem) => cartItem.productId === id)
 
-    await addToCart({
-      id: cartItemFound ? cartItemFound.id : 0,
-      productId: id,
-      productName: name,
-      productPrice: price,
-      productCurrencyUnit: currencyUnit,
-      productQuantity: quantity,
-      productDiscount: discount,
-      productImage: image,
-      quantity: cartItemFound ? cartItemFound.quantity + 1 : 1
-    })
+    try {
+      await addToCart({
+        id: cartItemFound ? cartItemFound.id : 0,
+        productId: id,
+        productName: name,
+        productPrice: price,
+        productCurrencyUnit: currencyUnit,
+        productQuantity: quantity,
+        productDiscount: discount,
+        productImage: image,
+        quantity: cartItemFound ? cartItemFound.quantity + 1 : 1
+      })
+
+      toast({
+        title: 'Success',
+        description: MESSAGES.ADD_TO_CART_SUCCESS,
+        status: 'success'
+      })
+    } catch (error) {
+      toast({
+        title: 'Failed',
+        description: MESSAGES.ADD_TO_CART_FAILED,
+        status: 'error'
+      })
+    }
 
     onCloseLoadingModal()
   }

@@ -60,7 +60,21 @@ const Cart = () => {
 
   const handleConfirmRemoveItemFromCart = async () => {
     if (selectedCartId) {
-      await removeFromCart(selectedCartId)
+      try {
+        await removeFromCart(selectedCartId)
+
+        toast({
+          title: 'Success',
+          description: MESSAGES.REMOVE_FROM_CART_SUCCESS,
+          status: 'success'
+        })
+      } catch (error) {
+        toast({
+          title: 'Failed',
+          description: MESSAGES.REMOVE_FROM_CART_FAILED,
+          status: 'error'
+        })
+      }
     }
     onConfirmDeleteClose()
   }
