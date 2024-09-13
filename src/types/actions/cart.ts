@@ -5,10 +5,10 @@ import { ACTION_TYPES } from '@app/constants'
 import { PaginationResponse, CartItem } from '@app/types'
 
 export interface ICartState {
-  // Cart list
-  isCartListLoading: boolean
-  cartList: PaginationResponse<CartItem>
-  cartListError: string | null
+  // Cart
+  isCartLoading: boolean
+  cart: PaginationResponse<CartItem>
+  cartError: string | null
 
   // Add to cart
   isAddToCartLoading: boolean

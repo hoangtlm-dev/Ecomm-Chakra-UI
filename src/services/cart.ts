@@ -21,11 +21,11 @@ const paginationApiUrl = getEnvValue('VITE_PAGINATION_API_URL')
  * @returns - A promise that resolves to the cart object returned by the server
  * after the operation (either creation or update).
  */
-export const addToCartService = async (cartData: CartItem): Promise<CartItem> => {
-  if (!cartData.id) {
-    return await httpRequest<Omit<CartItem, 'id'>, CartItem>(cartApiUrl, 'POST', cartData)
+export const addToCartService = async (cartItemData: CartItem): Promise<CartItem> => {
+  if (!cartItemData.id) {
+    return await httpRequest<Omit<CartItem, 'id'>, CartItem>(cartApiUrl, 'POST', cartItemData)
   }
-  return await httpRequest<CartItem, CartItem>(`${cartApiUrl}/${cartData.id}`, 'PUT', cartData)
+  return await httpRequest<CartItem, CartItem>(`${cartApiUrl}/${cartItemData.id}`, 'PUT', cartItemData)
 }
 
 /**

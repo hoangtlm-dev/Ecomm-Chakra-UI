@@ -11,20 +11,20 @@ export const cartReducer = (state: ICartState, action: CartAction): ICartState =
       return { ...state, isAddToCartLoading: true, addToCartError: null }
     case ACTION_TYPES.ADD_TO_CART_SUCCESS: {
       const newCart = action.payload
-      const existedProductFound = state.cartList.data.find((cartItem) => cartItem.productId === newCart.productId)
+      const existedProductFound = state.cart.data.find((cartItem) => cartItem.productId === newCart.productId)
 
       return {
         ...state,
-        cartList: {
-          ...state.cartList,
+        cart: {
+          ...state.cart,
           data: existedProductFound
-            ? state.cartList.data.map((cartItem) =>
+            ? state.cart.data.map((cartItem) =>
                 cartItem.productId === newCart.productId
                   ? { ...cartItem, quantity: cartItem.quantity + newCart.quantity }
                   : cartItem
               )
-            : [newCart, ...state.cartList.data],
-          totalItems: existedProductFound ? state.cartList.totalItems : state.cartList.totalItems + 1
+            : [newCart, ...state.cart.data],
+          totalItems: existedProductFound ? state.cart.totalItems : state.cart.totalItems + 1
         },
         isAddToCartLoading: false,
         addToCartError: null
@@ -35,40 +35,40 @@ export const cartReducer = (state: ICartState, action: CartAction): ICartState =
 
     // Fetch cart
     case ACTION_TYPES.FETCH_CART_PENDING:
-      return { ...state, isCartListLoading: true, cartListError: null }
+      return { ...state, isCartLoading: true, cartError: null }
 
     case ACTION_TYPES.FETCH_CART_SUCCESS:
       return {
         ...state,
-        isCartListLoading: false,
-        cartList: action.payload
+        isCartLoading: false,
+        cart: action.payload
       }
 
     case ACTION_TYPES.FETCH_CART_FAILED:
-      return { ...state, isCartListLoading: false, cartListError: action.payload }
+      return { ...state, isCartLoading: false, cartError: action.payload }
 
     // Quantity control
     case ACTION_TYPES.INCREASE_QUANTITY_IN_CART: {
-      const updatedCartData = state.cartList.data.map((item) =>
+      const updatedCartData = state.cart.data.map((item) =>
         item.id === action.payload ? { ...item, quantity: item.quantity + 1 } : item
       )
       return {
         ...state,
-        cartList: {
-          ...state.cartList,
+        cart: {
+          ...state.cart,
           data: updatedCartData
         }
       }
     }
 
     case ACTION_TYPES.DECREASE_QUANTITY_IN_CART: {
-      const updatedCartData = state.cartList.data.map((item) =>
+      const updatedCartData = state.cart.data.map((item) =>
         item.id === action.payload && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
       )
       return {
         ...state,
-        cartList: {
-          ...state.cartList,
+        cart: {
+          ...state.cart,
           data: updatedCartData
         }
       }
@@ -76,11 +76,11 @@ export const cartReducer = (state: ICartState, action: CartAction): ICartState =
 
     case ACTION_TYPES.CHANGE_QUANTITY_IN_CART: {
       const { cartId, quantity } = action.payload
-      const updatedCartData = state.cartList.data.map((item) => (item.id === cartId ? { ...item, quantity } : item))
+      const updatedCartData = state.cart.data.map((item) => (item.id === cartId ? { ...item, quantity } : item))
       return {
         ...state,
-        cartList: {
-          ...state.cartList,
+        cart: {
+          ...state.cart,
           data: updatedCartData
         }
       }
@@ -93,14 +93,14 @@ export const cartReducer = (state: ICartState, action: CartAction): ICartState =
     case ACTION_TYPES.REMOVE_FROM_CART_SUCCESS: {
       const cartId = action.payload
 
-      const updatedCartList = state.cartList.data.filter((cartItem) => cartItem.id !== cartId)
+      const updatedCart = state.cart.data.filter((cartItem) => cartItem.id !== cartId)
 
       return {
         ...state,
-        cartList: {
-          ...state.cartList,
-          data: updatedCartList,
-          totalItems: state.cartList.totalItems - 1
+        cart: {
+          ...state.cart,
+          data: updatedCart,
+          totalItems: state.cart.totalItems - 1
         },
         isRemoveFromCartLoading: false,
         removeFromCartError: null

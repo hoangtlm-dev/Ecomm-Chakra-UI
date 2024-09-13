@@ -4,7 +4,7 @@ import { mockProductImage, PAGINATION } from '@app/constants'
 // Types
 import { CartItem } from '@app/types'
 
-export const MOCK_CART: CartItem = {
+export const MOCK_CART_ITEM: CartItem = {
   id: 0,
   productId: 1,
   productName: 'Nike Airmax 270 React',
@@ -16,8 +16,8 @@ export const MOCK_CART: CartItem = {
   quantity: 2
 }
 
-export const MOCK_CARTS = (length?: number): CartItem[] =>
+export const MOCK_CART = (length?: number): CartItem[] =>
   Array.from({ length: length ?? PAGINATION.DEFAULT_ITEMS_PER_PAGE }, (_, index) => ({
-    ...MOCK_CART,
+    ...MOCK_CART_ITEM,
     id: index + 1
   }))

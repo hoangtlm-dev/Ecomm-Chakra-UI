@@ -5,7 +5,7 @@ import { Container } from '@chakra-ui/react'
 import { CartItem } from '@app/components'
 
 // Mocks
-import { MOCK_CART } from '@app/mocks'
+import { MOCK_CART_ITEM } from '@app/mocks'
 
 const meta: Meta<typeof CartItem> = {
   title: 'Components/Cart/CartItem',
@@ -25,6 +25,6 @@ type Story = StoryObj<typeof CartItem>
 
 export const Default: Story = {
   args: {
-    cart: MOCK_CART
+    cartItem: MOCK_CART_ITEM
   }
 }
