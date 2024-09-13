@@ -72,11 +72,11 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [])
 
-  const addToCart = useCallback(async (cart: CartItem) => {
+  const addToCart = useCallback(async (cartItem: CartItem) => {
     dispatch({ type: ACTION_TYPES.ADD_TO_CART_PENDING })
     try {
-      const newCart = await addToCartService(cart)
-      dispatch({ type: ACTION_TYPES.ADD_TO_CART_SUCCESS, payload: newCart })
+      const newCartItem = await addToCartService(cartItem)
+      dispatch({ type: ACTION_TYPES.ADD_TO_CART_SUCCESS, payload: newCartItem })
     } catch (error) {
       dispatch({ type: ACTION_TYPES.ADD_TO_CART_FAILED, payload: MESSAGES.ADD_TO_CART_FAILED })
     }
@@ -90,8 +90,8 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
     dispatch({ type: ACTION_TYPES.DECREASE_QUANTITY_IN_CART, payload: cartId })
   }, [])
 
-  const changeQuantity = useCallback((cartId: number, quantity: number) => {
-    dispatch({ type: ACTION_TYPES.CHANGE_QUANTITY_IN_CART, payload: { cartId, quantity } })
+  const changeQuantity = useCallback((cartItemId: number, quantity: number) => {
+    dispatch({ type: ACTION_TYPES.CHANGE_QUANTITY_IN_CART, payload: { cartItemId, quantity } })
   }, [])
 
   const removeFromCart = useCallback(async (cartId: number) => {

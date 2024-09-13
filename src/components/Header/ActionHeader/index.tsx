@@ -13,6 +13,7 @@ import { useCartContext } from '@app/hooks'
 
 const ActionHeader = () => {
   const { state: cartState, fetchCart } = useCartContext()
+  const { cart } = cartState
 
   useEffect(() => {
     fetchCart()
@@ -43,7 +44,7 @@ const ActionHeader = () => {
                 borderColor="white"
                 borderWidth={2}
               >
-                {cartState.cart.totalItems}
+                {cart.totalItems}
               </Circle>
             </Box>
           </Link>

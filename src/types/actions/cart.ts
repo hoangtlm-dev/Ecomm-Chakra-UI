@@ -51,7 +51,7 @@ export type CartRequestSuccessAction =
     }
   | {
       type: ACTION_TYPES.CHANGE_QUANTITY_IN_CART
-      payload: { cartId: number; quantity: number }
+      payload: { cartItemId: number; quantity: number }
     }
   | {
       type: ACTION_TYPES.REMOVE_FROM_CART_SUCCESS
