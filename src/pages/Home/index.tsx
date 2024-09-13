@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import {
   Center,
@@ -45,7 +45,7 @@ const Home = () => {
     'filterPink.500',
     'filterBlurPink.500'
   ]
-  const [priceRange, setPriceRange] = useState([0, 1000])
+
   const { state: productState, fetchProducts, setListType } = useProductContext()
   const { state: categoryState, fetchCategories } = useCategoryContext()
   const { state: cartState, addToCart } = useCartContext()
@@ -93,7 +93,6 @@ const Home = () => {
   }
 
   const handleFilterByPrices = async (priceRange: number[]) => {
-    setPriceRange(priceRange)
     navigate({
       pathname: ROUTES.ROOT,
       search: createSearchParams({
@@ -170,8 +169,8 @@ const Home = () => {
         <Stack gap={8}>
           <FilterCategories categories={categoryList.data} />
           <FilterPrices
-            minPrice={queryParams.min_price ? Number(queryParams.min_price) : priceRange[0]}
-            maxPrice={queryParams.max_price ? Number(queryParams.max_price) : priceRange[1]}
+            minPrice={queryParams.min_price ? Number(queryParams.min_price) : 0}
+            maxPrice={queryParams.max_price ? Number(queryParams.max_price) : 1000}
             onFilterByPrices={handleFilterByPrices}
           />
           <FilterColors colors={filteredColors} />
