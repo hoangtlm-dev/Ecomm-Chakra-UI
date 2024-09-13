@@ -51,7 +51,7 @@ const Home = () => {
   const { state: cartState, addToCart } = useCartContext()
   const { productList, isProductListLoading, listType } = productState
   const { categoryList } = categoryState
-  const { cartList, isAddToCartLoading } = cartState
+  const { cart, isAddToCartLoading } = cartState
 
   const navigate = useNavigate()
   const { isOpen: isOpenLoadingModal, onOpen: onOpenLoadingModal, onClose: onCloseLoadingModal } = useDisclosure()
@@ -133,7 +133,7 @@ const Home = () => {
   const handleAddProductToCart = async (product: Product) => {
     const { id, name, price, currencyUnit, quantity, discount, image } = product
 
-    const cartItemFound = cartList.data.find((cartItem) => cartItem.productId === id)
+    const cartItemFound = cart.data.find((cartItem) => cartItem.productId === id)
 
     try {
       await addToCart({

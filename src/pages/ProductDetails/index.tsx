@@ -36,7 +36,7 @@ const ProductDetails = () => {
   const { state: productState, fetchProducts, fetchCurrentProduct } = useProductContext()
   const { state: cartState, addToCart } = useCartContext()
   const { productList, currentProduct, isProductListLoading, isCurrentProductLoading } = productState
-  const { cartList, isAddToCartLoading } = cartState
+  const { cart, isAddToCartLoading } = cartState
 
   const productId = productSlug && Number(getIdFromSlug(productSlug))
 
@@ -67,7 +67,7 @@ const ProductDetails = () => {
   const handleAddProductToCart = async (product: Product) => {
     const { id, name, price, currencyUnit, quantity, discount, image } = product
 
-    const cartItemFound = cartList.data.find((cartItem) => cartItem.productId === id)
+    const cartItemFound = cart.data.find((cartItem) => cartItem.productId === id)
     const cartQuantity = currentProduct?.id === product.id ? currentProductQuantity : 1
 
     try {

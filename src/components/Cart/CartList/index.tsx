@@ -66,7 +66,7 @@ const CartList = ({
     return cart.map((cartItem, index) => (
       <Fragment key={cartItem.id}>
         <CartItem
-          cart={cartItem}
+          cartItem={cartItem}
           onRemoveItemFromCart={onRemoveItemFromCart}
           onIncreaseQuantity={() => onIncreaseQuantity(cartItem.id)}
           onChangeQuantity={(value) => onChangeQuantity(cartItem.id, Number(value))}

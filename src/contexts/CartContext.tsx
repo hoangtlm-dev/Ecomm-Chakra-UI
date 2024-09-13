@@ -13,9 +13,9 @@ import { addToCartService, getCartService, removeFromCartService } from '@app/se
 import { cartReducer } from '@app/reducers'
 
 const initialState: ICartState = {
-  // Cart list
-  isCartListLoading: true,
-  cartList: {
+  // Cart
+  isCartLoading: true,
+  cart: {
     data: [],
     limit: PAGINATION.DEFAULT_ITEMS_PER_PAGE,
     page: 1,
@@ -26,7 +26,7 @@ const initialState: ICartState = {
     totalItems: 0,
     totalPages: 0
   },
-  cartListError: null,
+  cartError: null,
 
   // Add to cart
   isAddToCartLoading: false,

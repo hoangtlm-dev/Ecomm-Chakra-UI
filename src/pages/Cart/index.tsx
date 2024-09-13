@@ -44,7 +44,7 @@ const Cart = () => {
     removeFromCart
   } = useCartContext()
 
-  const { isCartListLoading, cartList, isRemoveFromCartLoading } = cartState
+  const { isCartLoading, cart, isRemoveFromCartLoading } = cartState
 
   const [selectedCartId, setSelectedCartId] = useState<number | null>(null)
   const cancelConfirmDeleteRef = useRef<HTMLButtonElement | null>(null)
@@ -79,7 +79,7 @@ const Cart = () => {
     onConfirmDeleteClose()
   }
 
-  const subTotal = cartList.data.reduce((acc, cartItem) => {
+  const subTotal = cart.data.reduce((acc, cartItem) => {
     const { productPrice, productDiscount, quantity } = cartItem
 
     const totalPriceItemInCart = calculateProductPrice(productPrice, productDiscount, quantity)
@@ -102,8 +102,8 @@ const Cart = () => {
   return (
     <Container>
       <CartList
-        isLoading={isCartListLoading}
-        cart={cartList.data}
+        isLoading={isCartLoading}
+        cart={cart.data}
         onRemoveItemFromCart={handleRemoveItemFromCart}
         onIncreaseQuantity={increaseQuantity}
         onDecreaseQuantity={decreaseQuantity}
