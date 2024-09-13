@@ -75,8 +75,8 @@ export const cartReducer = (state: ICartState, action: CartAction): ICartState =
     }
 
     case ACTION_TYPES.CHANGE_QUANTITY_IN_CART: {
-      const { cartId, quantity } = action.payload
-      const updatedCartData = state.cart.data.map((item) => (item.id === cartId ? { ...item, quantity } : item))
+      const { cartItemId, quantity } = action.payload
+      const updatedCartData = state.cart.data.map((item) => (item.id === cartItemId ? { ...item, quantity } : item))
       return {
         ...state,
         cart: {
