@@ -34,18 +34,12 @@ import { calculateProductPrice } from '@app/utils'
 interface ICartListProps {
   isLoading: boolean
   cart: CartItemType[]
-  isDisabledQuantityChange: (cartId: number) => boolean
+  isUpdatingQuantity: (cartId: number) => boolean
   onRemoveItemFromCart: (cartId: number) => void
   onUpdateQuantity: (cartId: number, action: 'increase' | 'decrease' | 'change', newQuantity?: number) => void
 }
 
-const CartList = ({
-  isLoading,
-  cart,
-  isDisabledQuantityChange,
-  onRemoveItemFromCart,
-  onUpdateQuantity
-}: ICartListProps) => {
+const CartList = ({ isLoading, cart, isUpdatingQuantity, onRemoveItemFromCart, onUpdateQuantity }: ICartListProps) => {
   const tableHeadings = ['', 'Product', 'Unit Price', 'Qty', 'Price']
 
   const renderCartContent = () => {
@@ -66,7 +60,7 @@ const CartList = ({
       <Fragment key={cartItem.id}>
         <CartItem
           cartItem={cartItem}
-          isDisabledQuantityChange={isDisabledQuantityChange}
+          isUpdatingQuantity={() => isUpdatingQuantity(cartItem.id)}
           onRemoveItemFromCart={onRemoveItemFromCart}
           onUpdateQuantity={onUpdateQuantity}
         />
@@ -175,13 +169,13 @@ const CartList = ({
                         maxQuantity={productQuantity}
                         currentQuantity={quantity}
                         size="md"
-                        isDisabled={isDisabledQuantityChange(id)}
+                        isDisabled={isUpdatingQuantity(id)}
                         onDecreaseQuantity={() => onUpdateQuantity(id, 'decrease')}
                         onChangeQuantity={(value) => onUpdateQuantity(id, 'change', Number(value))}
                         onIncreaseQuantity={() => onUpdateQuantity(id, 'increase')}
                       />
                     </Td>
-                    <Td>
+                    <Td w="15%">
                       <Text>
                         {productCurrencyUnit}
                         {calculateProductPrice(productPrice, productDiscount, quantity)}

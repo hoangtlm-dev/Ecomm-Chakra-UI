@@ -43,7 +43,7 @@ const Cart = () => {
 
   const { isCartLoading, cart } = useGetCart()
   const { isRemoveFromCartLoading, removeFromCart } = useRemoveFromCart()
-  const { updateItemInCart, isUpdatingItemInCart } = useUpdateItemInCart()
+  const { isUpdateItemInCartLoading, updateItemInCart } = useUpdateItemInCart()
 
   const { cartInStore, setCartInStore, updateCartInStore } = useCartQuantityStore()
 
@@ -76,6 +76,10 @@ const Cart = () => {
       const cartItemFound = cartInStore.find((item) => item.id === cartItemId)
 
       if (cartItemFound) {
+        if (!isUpdateItemInCartLoading) {
+          setSelectedCartItemId(cartItemFound.id)
+        }
+
         let updatedQuantity = cartItemFound.quantity
 
         switch (action) {
@@ -102,7 +106,17 @@ const Cart = () => {
         }
       }
     },
-    [cartInStore, onConfirmDeleteOpen, updateCartInStore]
+    [cartInStore, onConfirmDeleteOpen, updateCartInStore, isUpdateItemInCartLoading]
+  )
+
+  const handleDisabledQuantityController = useCallback(
+    (cartId: number) => {
+      if (selectedCartItemId === cartId && isUpdateItemInCartLoading) {
+        return true
+      }
+      return false
+    },
+    [selectedCartItemId, isUpdateItemInCartLoading]
   )
 
   const handleRemoveItemFromCart = useCallback(
@@ -164,11 +178,10 @@ const Cart = () => {
       <CartList
         isLoading={isCartLoading}
         cart={cartInStore}
-        isDisabledQuantityChange={isUpdatingItemInCart}
+        isUpdatingQuantity={handleDisabledQuantityController}
         onRemoveItemFromCart={handleRemoveItemFromCart}
         onUpdateQuantity={handleUpdateQuantityInCart}
       />
-
       <Flex justifyContent="flex-end" mt={12}>
         <Invoice subTotal={subTotal} onCheckOut={handleCheckOut} />
       </Flex>

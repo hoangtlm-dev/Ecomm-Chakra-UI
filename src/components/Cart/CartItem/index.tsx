@@ -11,12 +11,12 @@ import { calculateProductPrice } from '@app/utils'
 
 interface ICartItemProps {
   cartItem: CartItemType
-  isDisabledQuantityChange: (cartId: number) => boolean
+  isUpdatingQuantity: (cartId: number) => boolean
   onRemoveItemFromCart: (cartId: number) => void
   onUpdateQuantity: (cartId: number, action: 'increase' | 'decrease' | 'change', newQuantity?: number) => void
 }
 
-const CartItem = ({ cartItem, isDisabledQuantityChange, onRemoveItemFromCart, onUpdateQuantity }: ICartItemProps) => {
+const CartItem = ({ cartItem, isUpdatingQuantity, onRemoveItemFromCart, onUpdateQuantity }: ICartItemProps) => {
   const {
     id,
     productName,
@@ -48,7 +48,7 @@ const CartItem = ({ cartItem, isDisabledQuantityChange, onRemoveItemFromCart, on
             onClick={() => onRemoveItemFromCart(id)}
           />
         </Flex>
-        <HStack gap={{ base: 2, sm: 4, md: 8 }}>
+        <HStack gap={{ base: 2, sm: 4, md: 12 }}>
           <Text fontSize="textSmall">
             {productCurrencyUnit}
             {calculateProductPrice(productPrice, productDiscount)}
@@ -57,7 +57,7 @@ const CartItem = ({ cartItem, isDisabledQuantityChange, onRemoveItemFromCart, on
             size="xs"
             maxQuantity={productQuantity}
             currentQuantity={quantity}
-            isDisabled={isDisabledQuantityChange(id)}
+            isDisabled={isUpdatingQuantity(id)}
             onDecreaseQuantity={() => onUpdateQuantity(id, 'decrease')}
             onChangeQuantity={(value) => onUpdateQuantity(id, 'change', Number(value))}
             onIncreaseQuantity={() => onUpdateQuantity(id, 'increase')}
